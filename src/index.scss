@@ -36,7 +36,27 @@ $contrastcolor: white;
 .nav {
   @include white-text-black-bg;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+
+  ul {
+    display: flex;
+    list-style: none;
+    li {
+      img {
+        height: 55px;
+        width: 55px;
+        border-radius: 50%;
+      }
+      margin-right: 16px;
+      button {
+        border: none;
+        color: inherit;
+        background-color: inherit;
+        cursor: pointer;
+      }
+    }
+  }
 
   a {
     @include white-text-black-bg;
@@ -50,6 +70,6 @@ $contrastcolor: white;
 
 @media (min-width: 768px) {
   .nav {
-    justify-content: flex-start;
+    justify-content: space-between; 
   }
 }
