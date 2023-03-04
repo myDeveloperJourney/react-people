@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Index from '../pages/Index';
 import Show from '../pages/Show';
@@ -47,15 +47,27 @@ function Main(props) {
     }
   }
 
+  // create the mutable reference
+  const getPeopleRef = useRef(); // { current: undefined }
+
   useEffect(() => {
-    getPeople();
+    getPeopleRef.current = getPeople;
+    // set the mutable reference to the object that needs to persist between renders
+  });
+
+  useEffect(() => {
+    if(props.user) {
+      getPeopleRef.current();
+    } else {
+      setPeople(null);
+    }
   }, [props.user]); 
   // based on this config; it will run one time as soon as the component mounts to the DOM
 
   return (
     <main>
       <Routes>
-        <Route path="/" element={<Index people={people} createPeople={createPeople}/>} />
+        <Route path="/" element={<Index user={props.user} people={people} createPeople={createPeople}/>} />
         <Route path="/people/:id" element={<Show />} />
       </Routes>
     </main>

@@ -9,8 +9,11 @@ function App() {
 
   useEffect(() => {
     // think of this as an event listener
-    auth.onAuthStateChanged(user => setUser(user));
+    const unsubscribe = auth.onAuthStateChanged(user => setUser(user));
     // the "event" is when a user logs in or logs out with Google firebase
+    return () => { // this function get's called before each subsequent render cycle
+      unsubscribe(); // this will clear the onAuthStateChanged listener from browser memory
+    }
   }, []);
 
   return (

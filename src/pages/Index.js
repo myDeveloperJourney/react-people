@@ -45,33 +45,41 @@ function Index(props) {
   };
     
   return (
-    <section className="person-section">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={person.name}
-          name="name"
-          placeholder="name"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          value={person.image}
-          name="image"
-          placeholder="image URL"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          value={person.title}
-          name="title"
-          placeholder="title"
-          onChange={handleChange}
-        />
-        <input type="submit" value="Create Person" />
-      </form>
-      {props.people ? loaded() : loading()}
-    </section>
+    <>
+      {
+        !props.user ?
+        <h2>Please Login</h2>
+        :
+        <section className="person-section">
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={person.name}
+              name="name"
+              placeholder="name"
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              value={person.image}
+              name="image"
+              placeholder="image URL"
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              value={person.title}
+              name="title"
+              placeholder="title"
+              onChange={handleChange}
+            />
+            <input type="submit" value="Create Person" />
+          </form>
+          {props.people ? loaded() : loading()}
+        </section>
+      }
+    </>
+    
   );
 }
 
