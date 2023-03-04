@@ -6,15 +6,24 @@ import Show from '../pages/Show';
 function Main(props) {
   const [people, setPeople] = useState(null);
 
-  const API_URL = "http://localhost:3001/people"
+  const API_URL = 'http://localhost:3001/people'
 
   const getPeople = async () => {
-    const response = await fetch(API_URL);
-    console.log(response)
-    const data = await response.json();
-    setPeople(data);
-  }
+    let token;
 
+    if(props.user) {
+      token = await props.user.getIdToken();
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      const data = await response.json();
+      setPeople(data);
+    }
+  }
+  
   const createPeople = async (person) => {
     try {
       await fetch(API_URL, {
@@ -32,7 +41,8 @@ function Main(props) {
 
   useEffect(() => {
     getPeople();
-  }, []);
+  }, [props.user]); 
+  // based on this config; it will run one time as soon as the component mounts to the DOM
 
   return (
     <main>
