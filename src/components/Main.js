@@ -1,32 +1,30 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Index from '../pages/Index';
 import Show from '../pages/Show';
+
 
 function Main(props) {
   const [people, setPeople] = useState(null);
 
   const API_URL = 'http://localhost:3001/people'
 
-  const getPeople = async () => {
-    
+  const getPeople = useCallback(async () => {
     try {
-      if(props.user) {
-        const token = await props.user.getIdToken();
-        const response = await fetch(API_URL, {
+      const token = await props.user.getIdToken();
+      const response = await fetch(API_URL, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + token
           }
-        });
-        const data = await response.json();
-        setPeople(data);
-      }
+      });
+      const data = await response.json();
+      setPeople(data);
     } catch (error) {
-      // we can handle the error now
-      // ex. make modal pop up to tell user something went wrong
+      console.log(error)
     }
-  }
+  }, [props.user]);
+
   
   const createPeople = async (person) => {
     try {
@@ -47,21 +45,13 @@ function Main(props) {
     }
   }
 
-  // create the mutable reference
-  const getPeopleRef = useRef(); // { current: undefined }
-
-  useEffect(() => {
-    getPeopleRef.current = getPeople;
-    // set the mutable reference to the object that needs to persist between renders
-  });
-
   useEffect(() => {
     if(props.user) {
-      getPeopleRef.current();
+      getPeople();
     } else {
       setPeople(null);
     }
-  }, [props.user]); 
+  }, [props.user, getPeople]); 
   // based on this config; it will run one time as soon as the component mounts to the DOM
 
   return (
