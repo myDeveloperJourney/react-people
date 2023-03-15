@@ -7,7 +7,7 @@ import Show from '../pages/Show';
 function Main(props) {
   const [people, setPeople] = useState(null);
 
-  const API_URL = 'http://localhost:3001/people'
+  const API_URL = 'https://people-api-v1.herokuapp.com/people';
 
   const getPeople = useCallback(async () => {
     try {
